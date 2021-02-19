@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'io.vertx:vertx-jdbc-client:4.0.2'
+    testCompile 'io.vertx:vertx-unit:4.0.2'
+    testCompile 'junit:junit:4.13.2'
+    testCompile 'org.hsqldb:hsqldb:2.5.1'
+    testCompile 'org.slf4j:slf4j-simple:1.7.30'
+}
