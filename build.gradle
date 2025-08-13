@@ -7,9 +7,15 @@ repositories {
 }
 
 dependencies {
-    testCompile 'io.vertx:vertx-jdbc-client:4.0.2'
-    testCompile 'io.vertx:vertx-unit:4.0.2'
-    testCompile 'junit:junit:4.13.2'
-    testCompile 'org.hsqldb:hsqldb:2.5.1'
-    testCompile 'org.slf4j:slf4j-simple:1.7.30'
+    testImplementation 'io.vertx:vertx-jdbc-client:5.0.2'
+    testImplementation 'io.vertx:vertx-unit:5.0.2'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hsqldb:hsqldb:2.7.4'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.17'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
