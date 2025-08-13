@@ -1,5 +1,12 @@
 import static io.vertx.core.Future.succeededFuture;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +50,29 @@ public class JDBCPreparedQueryTest {
                 })
                 .compose(pool -> pool.close())
                 .onComplete(context.asyncAssertSuccess());
+	}
+	
+	@Test
+	public void test2() throws SQLException {
+	    try (Connection connection = DriverManager.getConnection("jdbc:hsqldb:mem:.")) {
+	        try (Statement statement = connection.createStatement()) {
+                statement.execute("CREATE TABLE test2 (id INT, data BIGINT)");
+                try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO test2 (id, data) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                    preparedStatement.setInt(1, 1);
+                    preparedStatement.setLong(2, 42L);
+                    preparedStatement.executeUpdate();
+                    preparedStatement.setInt(1, 2);
+                    preparedStatement.setLong(2, 0L);
+                    preparedStatement.executeUpdate();
+                    preparedStatement.setInt(1, 3);
+                    preparedStatement.setNull(2, java.sql.Types.BIGINT);
+                    preparedStatement.executeUpdate();
+                }
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    resultSet.next();
+                }
+            }
+	    }
 	}
 
 }
